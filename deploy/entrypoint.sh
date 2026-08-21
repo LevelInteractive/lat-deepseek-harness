@@ -15,8 +15,11 @@ TRUSTED_HOSTS="${DSH_TRUSTED_HOSTS:-deepseek-harness.dash.level.agency}"
 export DSH_HOME="${DSH_HOME:-/data}"
 mkdir -p "$DSH_HOME"
 
-# Build the repeatable --trusted-host argument list.
-set -- web --no-open --patch /app/deploy/host.patch.yml
+# Build the argument list. ORDER MATTERS: --patch is a LAUNCHER option and must
+# come immediately after `web`, before any app-level flag. dsh's `web` command
+# uses commander passThroughOptions, so the first app flag (e.g. --no-open) makes
+# everything after it pass through to the web app — which does not know --patch.
+set -- web --patch /app/deploy/host.patch.yml --no-open
 for h in $TRUSTED_HOSTS; do
   set -- "$@" --trusted-host "$h"
 done
