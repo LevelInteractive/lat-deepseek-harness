@@ -1,0 +1,17 @@
+# Level Agency deploy overlay for `dsh web`, applied via `--patch`.
+#
+# A dsh user-patch is a top-level YAML array of id-targeted PatchOptions. An
+# id-targeted patch REPLACES the whole `config` of the matched row (dsh does not
+# deep-merge), so we restate every field the row keeps.
+#
+# `webserver` normally computes `host: !!js ctx.webStartup.host ?? '127.0.0.1'`.
+# The `--host 0.0.0.0` CLI flag is blocked upstream for safety, but the webserver
+# plugin's own schema accepts '0.0.0.0'; setting it here binds all interfaces so
+# Traefik can reach the container over the Swarm overlay network. Network
+# exposure is gated by Level's Traefik forward-auth (Google SSO), NOT by dsh.
+# The public authority is declared to the /api browser-trust fence via
+# `--trusted-host` on the launch command (see deploy/entrypoint.sh).
+- id: webserver
+  config:
+    host: "0.0.0.0"
+    port: 3080

@@ -1,0 +1,6 @@
+# The image installs the published @deepseek-ai/dsh CLI from npm; it does NOT
+# build the fork's source tree. Keep the build context tiny — only the Dockerfile
+# and ./deploy are needed.
+*
+!deploy
+!Dockerfile
