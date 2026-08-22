@@ -19,7 +19,7 @@ mkdir -p "$DSH_HOME"
 # come immediately after `web`, before any app-level flag. dsh's `web` command
 # uses commander passThroughOptions, so the first app flag (e.g. --no-open) makes
 # everything after it pass through to the web app — which does not know --patch.
-set -- web --patch /app/deploy/host.patch.yml --no-open
+set -- web --patch /app/deploy/host.patch.yml --patch /app/deploy/providers.patch.yml --no-open
 for h in $TRUSTED_HOSTS; do
   set -- "$@" --trusted-host "$h"
 done

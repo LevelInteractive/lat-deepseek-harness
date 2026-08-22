@@ -1,0 +1,35 @@
+# Level Agency deploy overlay: LLM providers for the hosted instance.
+#
+# dsh ships with DeepSeek as the default model, but we run on Anthropic + OpenAI
+# keys (no DeepSeek creds). The base bundle already includes the pi-ai
+# multi-provider adapter (`llm-pi-ai`), mounted DORMANT — it activates the
+# `anthropic` / `openai` routes (real endpoints + wire protocols, from the
+# installed pi-ai catalog) as soon as it's given provider profiles. Normally the
+# web Models page writes those, but that page is loopback-only when hosted, so we
+# supply them here instead. Keys resolve per request from the container env
+# (ANTHROPIC_API_KEY / OPENAI_API_KEY) — no secret in this file.
+#
+# A dsh id-targeted patch REPLACES the whole matched config (no deep-merge), so
+# each row restates its full config.
+- id: llm-pi-ai
+  config:
+    providers:
+      anthropic:
+        apiKeyEnv: ANTHROPIC_API_KEY
+        models:
+          - id: claude-sonnet-5
+          - id: claude-opus-5
+          - id: claude-haiku-4-5
+      openai:
+        apiKeyEnv: OPENAI_API_KEY
+        models:
+          - id: gpt-5.4
+          - id: gpt-5.4-mini
+
+# Make Claude the default model for new agent sessions (was deepseek-official /
+# deepseek-v4-flash). `provider` selects the pi-ai route; `model` is passed to
+# that provider's API verbatim.
+- id: agent-default-model
+  config:
+    provider: anthropic
+    model: claude-sonnet-5
