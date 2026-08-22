@@ -34,8 +34,7 @@ ARG DSH_VERSION=0.1.1-rc.2
 RUN npm install -g "@deepseek-ai/dsh@${DSH_VERSION}" && npm cache clean --force
 
 WORKDIR /app
-COPY deploy/host.patch.yml /app/deploy/host.patch.yml
-COPY deploy/entrypoint.sh  /app/deploy/entrypoint.sh
+COPY deploy/ /app/deploy/
 RUN chmod +x /app/deploy/entrypoint.sh
 
 # DSH_HOME holds credentials, the SQLite session store, and the agent workspace.
