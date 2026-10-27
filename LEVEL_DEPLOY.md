@@ -3,7 +3,7 @@
 Level's hosted deployment of DeepSeek's open-source agent harness
 ([`deepseek-ai/deepseek-harness`](https://github.com/deepseek-ai/deepseek-harness),
 MIT). This repo is the Level fork `LevelInteractive/lat-deepseek-harness`,
-consumed as a submodule at `services/deepseek-harness` in
+cloned as a standalone repo at `services/deepseek-harness` in
 `LevelInteractive/level-agency-tools` and deployed on Dokploy at
 **https://deepseek-harness.dash.level.agency**.
 
